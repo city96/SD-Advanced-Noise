@@ -76,7 +76,7 @@ class LatentGaussianNoise:
 				srnd = True if random == "shared" else False,
 			)
 			if scale > 1:
-				target = (round(width/8),round(height/8))
+				target = (round(height/8),round(width/8))
 				lat = transforms.Resize(target, antialias=True)(lat)
 			out.append(lat)
 		out = torch.stack(out)

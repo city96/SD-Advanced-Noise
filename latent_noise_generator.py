@@ -20,7 +20,7 @@ def gaussian_latent_noise(width=64, height=64, ver="v1", seed=-1, fac=0.6, nul=0
 
 	limit = limit[ver]
 	if srnd: # shared random
-		rand = torch.rand([width,height])
+		rand = torch.rand([height,width])
 		lat = torch.stack([
 			(limit["min"]["A"] + torch.clone(rand)*(limit["max"]["A"]-limit["min"]["A"])),
 			(limit["min"]["B"] + torch.clone(rand)*(limit["max"]["B"]-limit["min"]["B"])),
@@ -29,16 +29,16 @@ def gaussian_latent_noise(width=64, height=64, ver="v1", seed=-1, fac=0.6, nul=0
 		])
 	else: # separate random
 		lat = torch.stack([
-			(limit["min"]["A"] + torch.rand([width,height])*(limit["max"]["A"]-limit["min"]["A"])),
-			(limit["min"]["B"] + torch.rand([width,height])*(limit["max"]["B"]-limit["min"]["B"])),
-			(limit["min"]["C"] + torch.rand([width,height])*(limit["max"]["C"]-limit["min"]["C"])),
-			(limit["min"]["D"] + torch.rand([width,height])*(limit["max"]["D"]-limit["min"]["D"])),
+			(limit["min"]["A"] + torch.rand([height,width])*(limit["max"]["A"]-limit["min"]["A"])),
+			(limit["min"]["B"] + torch.rand([height,width])*(limit["max"]["B"]-limit["min"]["B"])),
+			(limit["min"]["C"] + torch.rand([height,width])*(limit["max"]["C"]-limit["min"]["C"])),
+			(limit["min"]["D"] + torch.rand([height,width])*(limit["max"]["D"]-limit["min"]["D"])),
 		])
 	tnul = torch.stack([ # black image
-		torch.ones([width, height])*limit["nul"]["A"],
-		torch.ones([width, height])*limit["nul"]["B"],
-		torch.ones([width, height])*limit["nul"]["C"],
-		torch.ones([width, height])*limit["nul"]["D"],
+		torch.ones([height,width])*limit["nul"]["A"],
+		torch.ones([height,width])*limit["nul"]["B"],
+		torch.ones([height,width])*limit["nul"]["C"],
+		torch.ones([height,width])*limit["nul"]["D"],
 	])
 	out = ((lat*fac)*(1.0-nul) + tnul*nul)/2
 	return out
